@@ -15,9 +15,16 @@ Akero does not try to be a substitute for a fully featured [PKI](http://en.wikip
 * [100%](https://busyloop.net/oss/akero/coverage/) test coverage
 
 
+## Installation
+
+`gem install akero`
+
+
 ## Usage
 
 ```ruby
+require 'akero'
+
 # Alice, Bob and Charlie are Akero instances
 alice = Akero.new
 bob = Akero.new
