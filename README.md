@@ -64,13 +64,12 @@ new_alice = Akero.load(File.read('/tmp/alice.akr'))
 * [API Docs](http://rubydoc.info/gems/akero/Akero)
 * [Spec](https://github.com/busyloop/akero/blob/master/spec/akero_spec.rb)
 
-
 ## Benchmarks
 
 ![Throughput](http://github.com/busyloop/akero/raw/master/benchmark/bm_rate.png)
 ![Message size](http://github.com/busyloop/akero/raw/master/benchmark/bm_size.png)
 
-The above charts were generated on an [AMD Turion II Neo N40L CPU](http://www.cpubenchmark.net/cpu.php?cpu=AMD+Turion+II+Neo+N40L+Dual-Core).
+The above charts were generated using MRI 1.9.3p362 (x86_64-linux) on an [AMD Turion II Neo N40L](http://www.cpubenchmark.net/cpu.php?cpu=AMD+Turion+II+Neo+N40L+Dual-Core) CPU.
 You may run the benchmarks on your own machine with `rake benchmark`.
 
 ## License (MIT)
