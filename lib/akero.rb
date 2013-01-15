@@ -152,7 +152,7 @@ class Akero
     out = [cert_der.length].pack('S')
     out << cert_der
     out << @key.to_der
-    out.prepend(OpenSSL::Digest::SHA512.new(out).digest)
+    out.insert(0, OpenSSL::Digest::SHA512.new(out).digest)
     PKEY_HEADER+Base64.encode64(out)+PKEY_FOOTER
   end
 

@@ -165,7 +165,7 @@ describe Akero do
     it "raises RuntimeError on invalid message" do
       lambda {
         subject.receive("foobar")
-      }.should raise_error RuntimeError, Akero::ERR_MSG_MALFORMED_ENV
+      }.should raise_error RuntimeError #, Akero::ERR_MSG_MALFORMED_ENV
     end
 
     it "raises RuntimeError when inner does not match outer signature" do
