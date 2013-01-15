@@ -343,7 +343,7 @@ class Akero
     cert.issuer = name
     cert.not_before = Time.now
     # valid until 2038-01-19 04:14:06 +0100
-    cert.not_after = 2147483646
+    cert.not_after = Time.at(2147483646)
     cert.public_key = rsa.public_key
     
     ef = OpenSSL::X509::ExtensionFactory.new(nil, cert)
