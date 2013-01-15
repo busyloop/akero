@@ -27,6 +27,9 @@ require 'openssl'
 require 'base64'
 
 # Akero is an easy-to-use library for peer-to-peer public key cryptography.
+#
+# Tested on: MRI 1.8.7, MRI 1.9.2, MRI 1.9.3, RBX 1.8, RBX 1.9
+# (JRuby may be added in the future but is currently NOT supported)
 class Akero
   # Akero::Message wraps a received message.
   class Message
