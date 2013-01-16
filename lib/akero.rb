@@ -73,7 +73,6 @@ class Akero
   ERR_MSG_NOT_STRING_NOR_PKCS7 = "Message must be of type String or OpenSSL::PKCS7" # @private
   ERR_MSG_CORRUPT_CERT = "Malformed message: Embedded certificate could not be verified; POSSIBLE SPOOF ATTEMPT!" # @private
   ERR_MSG_TOO_MANY_SIGNERS = "Corrupt message: Zero or multiple signers, expected exactly 1; POSSIBLE SPOOF ATTEMPT" # @private
-  ERR_MSG_SIG_MISMATCH = "Inner signature does not match outer signature; POSSIBLE SPOOF ATTEMPT" # @private
 
   PKEY_HEADER = "-----BEGIN AKERO PRIVATE KEY-----\n" # @private
   PKEY_FOOTER = "-----END AKERO PRIVATE KEY-----\n" # @private
@@ -200,7 +199,7 @@ class Akero
           raise RuntimeError, ERR_INVALID_RECIPIENT
       end
     }
-    Akero.replate(_sign(_encrypt(to, _sign(plaintext))).to_s, PLATE_CRYPTED)
+    Akero.replate(_sign(_encrypt(to, _sign(plaintext, false))).to_s, PLATE_CRYPTED)
   end
 
   # Receive an Akero message.
@@ -210,7 +209,7 @@ class Akero
   def receive(ciphertext)
     ciphertext = Akero.replate(ciphertext, Akero::PLATE_CRYPTED, true)
     begin
-      body, outer_signer_cert, body_type = verify(ciphertext)
+      body, signer_cert, body_type = verify(ciphertext, nil)
     rescue ArgumentError
       raise RuntimeError, ERR_MSG_MALFORMED_ENV
     end
@@ -218,16 +217,12 @@ class Akero
     case body_type.ord
       when 0x00
         # public message (signed)
-        return Message.new(body, outer_signer_cert, :signed)
+        return Message.new(body, signer_cert, :signed)
       when 0x01
         # private message (signed, crypted, signed)
         signed_plaintext = _decrypt(body)
-        plaintext, inner_signer_cert, body_type = verify(signed_plaintext)
-        msg = Message.new(plaintext, inner_signer_cert, :encrypted)
-
-        if msg.from != Akero.fingerprint_from_cert(outer_signer_cert)
-          raise RuntimeError, ERR_MSG_SIG_MISMATCH
-        end
+        plaintext, verified_cert, body_type = verify(signed_plaintext, signer_cert)
+        msg = Message.new(plaintext, signer_cert, :encrypted)
         return msg
     end
     raise RuntimeError, ERR_MSG_MALFORMED_BODY
@@ -280,25 +275,13 @@ class Akero
     end
   end
 
-  # Encrypt a message for one ore more recipients.
-  #
-  # @return [Array] Message_body, signer_certificate, body_type
   def _encrypt(to, msg, cipher=nil)
     cipher ||= OpenSSL::Cipher::new("AES-256-CFB")
     OpenSSL::PKCS7::encrypt(to, msg.to_der, cipher, OpenSSL::PKCS7::BINARY)
   end
 
-  # Sign a message.
-  #
-  # @overload _sign(message)
-  #   Sign a message.
-  #   @param [String] message Message
-  #   @return [OpenSSL::PKCS7] Signed message
-  # @overload _sign(message)
-  #   Sign a message.
-  #   @param [OpenSSL::PKCS7] message Message
-  #   @return [OpenSSL::PKCS7] Signed message
-  def _sign(message)
+  def _sign(message, embed_cert=true)
+    flags = embed_cert ? OpenSSL::PKCS7::BINARY : (OpenSSL::PKCS7::BINARY | OpenSSL::PKCS7::NOCERTS)
     case message
       when String
         type = 0x00
@@ -308,25 +291,26 @@ class Akero
         raise RuntimeError, ERR_MSG_NOT_STRING_NOR_PKCS7
     end
     message = message.to_der if message.is_a? OpenSSL::PKCS7
-    OpenSSL::PKCS7::sign(@cert, @key, type.chr + message, [], OpenSSL::PKCS7::BINARY)
+    OpenSSL::PKCS7::sign(@cert, @key, type.chr + message, [], flags)
   end
 
-  # Verify a signed message against its embedded certificate.
-  #
-  # @return [Array] message_body, signer_certificate, body_type
-  def verify(signed_msg)
+  def verify(signed_msg, cert)
     signed_msg = OpenSSL::PKCS7.new(signed_msg) if signed_msg.is_a? String
     store = OpenSSL::X509::Store.new
-    if signed_msg.certificates.nil? or signed_msg.certificates.length != 1
-      raise RuntimeError, ERR_MSG_TOO_MANY_SIGNERS
+
+    if cert.nil?
+      if signed_msg.certificates.nil? or signed_msg.certificates.length != 1
+        raise RuntimeError, ERR_MSG_TOO_MANY_SIGNERS
+      end
+
+      cert = signed_msg.certificates[0]
     end
 
-    signer_cert = signed_msg.certificates[0]
-    unless signed_msg.verify([signer_cert], store, nil, OpenSSL::PKCS7::NOINTERN | OpenSSL::PKCS7::NOVERIFY)
+    unless signed_msg.verify([cert], store, nil, OpenSSL::PKCS7::NOINTERN | OpenSSL::PKCS7::NOVERIFY)
       raise RuntimeError, ERR_MSG_CORRUPT_CERT
     end
 
-    [signed_msg.data[1..-1], signer_cert, signed_msg.data[0]]
+    [signed_msg.data[1..-1], cert, signed_msg.data[0]]
   end
 
   # Generate new RSA keypair and certificate.

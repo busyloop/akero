@@ -176,7 +176,7 @@ describe Akero do
         b = oscar.send(:_sign, a).to_s
         c = Akero.replate(b, Akero::PLATE_CRYPTED)
         subject.receive(c)
-      }.should raise_error RuntimeError, Akero::ERR_MSG_SIG_MISMATCH
+      }.should raise_error RuntimeError, Akero::ERR_MSG_CORRUPT_CERT
     end
 
     it "raises RuntimeError on malformed inner message" do
@@ -205,10 +205,9 @@ describe Akero do
         fake_msg.stub(:verify).and_return(false)
         fake_msg.stub_chain(:certificates, :length).and_return(1)
         fake_msg.stub_chain(:certificates, :[]).and_return(nil)
-        subject.send(:verify, fake_msg)
+        subject.send(:verify, fake_msg, nil)
       }.should raise_error RuntimeError, Akero::ERR_MSG_CORRUPT_CERT
     end
-
   end
 
   describe '#inspect' do
