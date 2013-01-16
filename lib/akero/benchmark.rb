@@ -15,16 +15,16 @@ class Akero
         puts "Running size benchmark..."
 
         rnd = Random.new
-        msg_sizes = (8..13).map{|x| 2**x}
-        key_sizes = [2048, 4096]
+        msg_sizes = (8..14).map{|x| 2**x}
+        modes = [[2048, false], [2048, true]]
         results = {}
-        key_sizes.each do |ksize|
-          alice = Akero.new(ksize)
-          bob   = Akero.new(ksize)
+        modes.each do |mode|
+          alice = Akero.new(mode[0])
+          bob   = Akero.new(mode[0])
           msg_sizes.each do |msize|
             msg = rnd.bytes(msize)
-            ciphertext = alice.encrypt(bob.public_key, msg)
-            (results["ENCRYPT #{ksize} bits"] ||= []) << [msize, ciphertext.length / msg.length.to_f]
+            ciphertext = alice.encrypt(bob.public_key, msg, mode[1])
+            (results["ENCRYPT #{mode[0]} bits #{mode[1] ? 'ascii_armor=1' : 'ascii_armor=0'}"] ||= []) << [msize, ciphertext.length / msg.length.to_f]
           end
         end
 
@@ -34,48 +34,48 @@ class Akero
       def b_timing
         puts "Running timing benchmark..."
 
-        msg_sizes = (4..18).map{|x| 2**x}
-        key_sizes = [2048, 4096]
+        msg_sizes = (8..18).map{|x| 2**x}
+        modes = [[2048, false], [2048, true]]
 
         rnd = Random.new
 
         rounds = 50
         results = []
-        key_sizes.each do |ksize|
-          results << B.enchmark("ENCRYPT #{ksize} bits", :rounds => rounds, :compare => :mean) do
-            alice = Akero.new(ksize)
-            bob   = Akero.new(ksize)
+        modes.each do |mode|
+          results << B.enchmark("ENCRYPT #{mode[0]} bits, ascii_armor=#{mode[1]?1:0}", :rounds => rounds, :compare => :mean) do
+            alice = Akero.new(mode[0])
+            bob   = Akero.new(mode[0])
             msg_sizes.each_with_index do |msize, i|
               msg = rnd.bytes(msize)
               job "msg_size #{msize}" do
-                alice.encrypt(bob.public_key, msg)
+                alice.encrypt(bob.public_key, msg, mode[1])
               end
             end
           end
         end
 
-        key_sizes.each do |ksize|
-          results << B.enchmark("SIGN #{ksize} bits", :rounds => rounds, :compare => :mean) do
-            alice = Akero.new(ksize)
-            bob   = Akero.new(ksize)
+        modes.each do |mode|
+          results << B.enchmark("DECRYPT #{mode[0]} bits, ascii_armor=#{mode[1]?1:0}", :rounds => rounds, :compare => :mean) do
+            alice = Akero.new(mode[0])
+            bob   = Akero.new(mode[0])
             msg_sizes.each_with_index do |msize, i|
               msg = rnd.bytes(msize)
-              job "msg_size #{msize}" do
-                alice.sign(msg)
-              end
-            end
-          end
-        end
-
-        key_sizes.each do |ksize|
-          results << B.enchmark("DECRYPT #{ksize} bits", :rounds => rounds, :compare => :mean) do
-            alice = Akero.new(ksize)
-            bob   = Akero.new(ksize)
-            msg_sizes.each_with_index do |msize, i|
-              msg = rnd.bytes(msize)
-              msg = alice.encrypt(bob.public_key, msg)
+              msg = alice.encrypt(bob.public_key, msg, mode[1])
               job "msg_size #{msize}" do
                 bob.receive(msg)
+              end
+            end
+          end
+        end
+
+        modes.each do |mode|
+          results << B.enchmark("SIGN #{mode[0]} bits, ascii_armor=#{mode[1]?1:0}", :rounds => rounds, :compare => :mean) do
+            alice = Akero.new(mode[0])
+            bob   = Akero.new(mode[0])
+            msg_sizes.each_with_index do |msize, i|
+              msg = rnd.bytes(msize)
+              job "msg_size #{msize}" do
+                alice.sign(msg, mode[1])
               end
             end
           end

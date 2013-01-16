@@ -4,13 +4,13 @@ Akero ([ἄγγελος](http://en.wiktionary.org/wiki/%F0%90%80%80%F0%90%80%90%
 
 Under the hood Akero uses standard OpenSSL primitives. Each instance wraps a [RSA](http://en.wikipedia.org/wiki/RSA)-keypair, a corresponding [X.509 certificate](http://en.wikipedia.org/wiki/X.509) and exchanges self-signed messages ([PKCS#7](https://tools.ietf.org/html/rfc2315)) with other instances.
 
-Akero does not try to be a substitute for a fully featured [PKI](http://en.wikipedia.org/wiki/Public_key_infrastructure). It is meant to be used as a building block in scenarios where trust-relationships and keyrings can be externally managed, and where the complexity of traditional solutions (X.509 PKI, OpenPGP, homegrown RSA) yields no tangible benefits.
+Akero does not try to be a substitute for a fully featured [PKI](http://en.wikipedia.org/wiki/Public_key_infrastructure). It is meant to be used as a building block in scenarios where trust-relationships and keyrings can be externally managed, and where the complexity of traditional solutions (X.509 PKI, OpenPGP, custom RSA) yields no tangible benefits.
 
 ## Features
 
 * Secure 1-to-n messaging (sign-only -or- sign->encrypt->sign)
-* Low complexity; easy to use, understand and review (only 166 lines of code)
-* Transport agnostic; messages and certificates are self-contained, ascii-armored (base64)
+* Low complexity; easy to use, understand and review (only 192 lines of code)
+* Transport agnostic; messages and certificates are self-contained and optionally ascii-armored (base64)
 * Built on standard OpenSSL primitives, no homegrown algorithms
 * [100%](https://busyloop.net/oss/akero/coverage/) test coverage
 
@@ -63,6 +63,13 @@ File.open('/tmp/alice.akr', 'w') { |f| f.write(alice.private_key) }
 
 # And load her again
 new_alice = Akero.load(File.read('/tmp/alice.akr'))
+
+# By default all messages are ascii armored.
+# In production Alice disables the armoring
+# for better performance.
+signed_msg = alice.sign("Hello world!", false)
+msg = alice.encrypt(alice.public_key, "Hello!", false)
+puts alice.receive(msg).body # => "Hello!"
 
 ```
 

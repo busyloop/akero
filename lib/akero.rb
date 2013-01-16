@@ -81,6 +81,7 @@ class Akero
   PLATE_CRYPTED = ['PKCS7', 'AKERO SECRET MESSAGE'] # @private
 
   DEFAULT_RSA_BITS = 2048
+  DEFAULT_DIGEST = OpenSSL::Digest::SHA512
 
   # Unique fingerprint of this Akero keypair.
   #
@@ -101,10 +102,10 @@ class Akero
   #   Akero.new(4096, OpenSSL::Digest::SHA512)
   #
   # @param [Integer] rsa_bits RSA key length
-  # @param [OpenSSL::Digest] sign_digest Signature digest
+  # @param [OpenSSL::Digest] digest Signature digest
   # @return [Akero] New Akero instance
-  def initialize(rsa_bits=DEFAULT_RSA_BITS, sign_digest=OpenSSL::Digest::SHA512)
-    @key, @cert = generate_keypair(rsa_bits, sign_digest) unless rsa_bits.nil?
+  def initialize(rsa_bits=DEFAULT_RSA_BITS, digest=DEFAULT_DIGEST)
+    @key, @cert = generate_keypair(rsa_bits, digest) unless rsa_bits.nil?
   end
 
   # Load an Akero identity.
@@ -161,9 +162,11 @@ class Akero
   # Sign a message.
   #
   # @param [String] plaintext The message to sign (binary safe)
+  # @param [Boolean] ascii_armor Convert the output in base64?
   # @return [String] Akero signed message
-  def sign(plaintext)
-    Akero.replate(_sign(plaintext).to_s, Akero::PLATE_SIGNED)
+  def sign(plaintext, ascii_armor=true)
+    out = _sign(plaintext)
+    ascii_armor ? Akero.replate(out.to_s, Akero::PLATE_SIGNED) : out.to_der
   end
 
   # Sign->encrypt->sign a message for 1 or more recipients.
@@ -184,8 +187,9 @@ class Akero
   #
   # @param [Array] to Akero public keys of recipients
   # @param [String] plaintext The message to encrypt (binary safe)
+  # @param [Boolean] ascii_armor Convert the output to base64?
   # @return [String] Akero secret message
-  def encrypt(to, plaintext)
+  def encrypt(to, plaintext, ascii_armor=true)
     to = [to] unless to.is_a? Array
     to = to.map { |e| 
       case e
@@ -199,7 +203,8 @@ class Akero
           raise RuntimeError, ERR_INVALID_RECIPIENT
       end
     }
-    Akero.replate(_sign(_encrypt(to, _sign(plaintext, false))).to_s, PLATE_CRYPTED)
+    out = _sign(_encrypt(to, _sign(plaintext, false)))
+    ascii_armor ? Akero.replate(out.to_s, PLATE_CRYPTED) : out.to_der
   end
 
   # Receive an Akero message.
@@ -207,7 +212,9 @@ class Akero
   # @param [String] ciphertext Akero Message
   # @return [Akero::Message] Message_body, signer_certificate, body_type
   def receive(ciphertext)
-    ciphertext = Akero.replate(ciphertext, Akero::PLATE_CRYPTED, true)
+    if ciphertext.start_with? '-----BEGIN '
+      ciphertext = Akero.replate(ciphertext, Akero::PLATE_CRYPTED, true)
+    end
     begin
       body, signer_cert, body_type = verify(ciphertext, nil)
     rescue ArgumentError
@@ -316,9 +323,9 @@ class Akero
   # Generate new RSA keypair and certificate.
   #
   # @param [Integer] rsa_bits RSA key length
-  # @param [OpenSSL::Digest] sign_digest Signature digest
+  # @param [OpenSSL::Digest] digest Signature digest
   # @return [Array] rsa_keypair, certificate
-  def generate_keypair(rsa_bits=DEFAULT_RSA_BITS, sign_digest=OpenSSL::Digest::SHA512)
+  def generate_keypair(rsa_bits=DEFAULT_RSA_BITS, digest=DEFAULT_DIGEST)
     cn = "Akero #{Akero::VERSION}"
     rsa = OpenSSL::PKey::RSA.new(rsa_bits)
 
@@ -342,7 +349,7 @@ class Akero
     aki = ef.create_extension("authorityKeyIdentifier",
                               "keyid:always,issuer:always")
     cert.add_extension(aki)
-    cert.sign(rsa, sign_digest.new)
+    cert.sign(rsa, digest.new)
     [rsa, cert]
   end
 end

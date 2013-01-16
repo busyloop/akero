@@ -56,145 +56,150 @@ describe Akero do
   end
 
   describe '#sign' do
-    describe 'return value' do
-      it "is a String that looks like an Akero signed message" do
-        plaintext = "Hello world!"
-        signed_msg = subject.sign(plaintext)
-        signed_msg.should be_a String
-        signed_msg.should match /^-----BEGIN #{Akero::PLATE_SIGNED[1]}-----\n/
-        signed_msg.should match /\n-----END #{Akero::PLATE_SIGNED[1]}-----\n$/
-      end
+    ([true, false]).each do |ascii_armor|
+      describe "ascii_armor=#{ascii_armor}" do
+        describe 'return value' do
+          if ascii_armor
+            it "is a String that looks like an Akero signed message" do
+              plaintext = "Hello world!"
+              signed_msg = subject.sign(plaintext, ascii_armor)
+              signed_msg.should be_a String
+              signed_msg.should match /^-----BEGIN #{Akero::PLATE_SIGNED[1]}-----\n/
+              signed_msg.should match /\n-----END #{Akero::PLATE_SIGNED[1]}-----\n$/
+            end
+          end
 
-      it "contains valid signature" do
-        plaintext = "Hello world!"
-        signed_msg = subject.sign(plaintext)
-        bob = Akero.new
-        msg = bob.receive(signed_msg)
-        msg.from.should == subject.id
-        msg.from_pk.should == subject.public_key
-        msg.body.should == plaintext
-        msg.type.should == :signed
+          it "contains valid signature" do
+            plaintext = "Hello world!"
+            signed_msg = subject.sign(plaintext, ascii_armor)
+            bob = Akero.new
+            msg = bob.receive(signed_msg)
+            msg.from.should == subject.id
+            msg.from_pk.should == subject.public_key
+            msg.body.should == plaintext
+            msg.type.should == :signed
+          end
+        end
       end
     end
   end
 
   describe '#encrypt' do
-    describe 'return value' do
-      it "is a String that looks like an Akero secret message" do
-        plaintext = "Hello world!"
-        ciphertext = subject.encrypt(subject.public_key, plaintext)
-        ciphertext.should be_a String
-        ciphertext.should match /^-----BEGIN #{Akero::PLATE_CRYPTED[1]}-----\n/
-        ciphertext.should match /\n-----END #{Akero::PLATE_CRYPTED[1]}-----\n$/
-      end
+    ([true, false]).each do |ascii_armor|
+      describe "ascii_armor=#{ascii_armor}" do
+        describe 'return value' do
+          if ascii_armor
+            it "is a String that looks like an Akero secret message" do
+              plaintext = "Hello world!"
+              ciphertext = subject.encrypt(subject.public_key, plaintext, ascii_armor)
+              ciphertext.should be_a String
+              ciphertext.should match /^-----BEGIN #{Akero::PLATE_CRYPTED[1]}-----\n/
+              ciphertext.should match /\n-----END #{Akero::PLATE_CRYPTED[1]}-----\n$/
+            end
+          end
 
-      it "contains valid signature" do
-        plaintext = "Hello world!"
-        signed_msg = subject.sign(plaintext)
-        bob = Akero.new
-        msg = bob.receive(signed_msg)
-        msg.from == subject.id
-        msg.from_pk.should == subject.public_key
-        msg.body.should == plaintext
-        msg.type.should == :signed
-      end
+          it "raises RuntimeError on invalid recipient (invalid public key)" do
+            lambda {
+              msg = "Hello world!"
+              ciphertext = subject.encrypt([subject.public_key, 'foo'], msg)
+            }.should raise_error RuntimeError, Akero::ERR_INVALID_RECIPIENT_CERT
+          end
 
-      it "raises RuntimeError on invalid recipient (invalid public key)" do
-        lambda {
-          msg = "Hello world!"
-          ciphertext = subject.encrypt([subject.public_key, 'foo'], msg)
-        }.should raise_error RuntimeError, Akero::ERR_INVALID_RECIPIENT_CERT
-      end
+          it "raises RuntimeError on invalid recipient (wrong type)" do
+            lambda {
+              msg = "Hello world!"
+              ciphertext = subject.encrypt([subject.public_key, 42], msg)
+            }.should raise_error RuntimeError, Akero::ERR_INVALID_RECIPIENT
+          end
 
-      it "raises RuntimeError on invalid recipient (wrong type)" do
-        lambda {
-          msg = "Hello world!"
-          ciphertext = subject.encrypt([subject.public_key, 42], msg)
-        }.should raise_error RuntimeError, Akero::ERR_INVALID_RECIPIENT
-      end
-
-      it "raises RuntimeError when message is not String" do
-        lambda {
-          msg = "Hello world!"
-          ciphertext = subject.encrypt(subject.public_key, 42)
-        }.should raise_error RuntimeError, Akero::ERR_MSG_NOT_STRING_NOR_PKCS7
+          it "raises RuntimeError when message is not String" do
+            lambda {
+              msg = "Hello world!"
+              ciphertext = subject.encrypt(subject.public_key, 42)
+            }.should raise_error RuntimeError, Akero::ERR_MSG_NOT_STRING_NOR_PKCS7
+          end
+        end
       end
     end
   end
 
   describe '#receive' do
-    it "decrypts message that was encrypted for self" do
-      plaintext = "Hello world!"
-      ciphertext = subject.encrypt(subject.public_key, plaintext)
-      msg = subject.receive(ciphertext)
-      msg.body.should == plaintext
-      msg.type.should == :encrypted
-    end
+    ([true, false]).each do |ascii_armor|
+      describe "ascii_armor=#{ascii_armor}" do
+        it "decrypts message that was encrypted for self" do
+          plaintext = "Hello world!"
+          ciphertext = subject.encrypt(subject.public_key, plaintext, ascii_armor)
+          msg = subject.receive(ciphertext)
+          msg.body.should == plaintext
+          msg.type.should == :encrypted
+        end
 
-    it "decrypts message that was encrypted for self and other recipients" do
-      plaintext = "Hello world!"
-      alice = Akero.new
-      bob   = Akero.new
-      ciphertext = subject.encrypt([alice.public_key, subject.public_key, bob.public_key], plaintext)
-      msg = subject.receive(ciphertext)
-      msg.body.should == plaintext
-      msg.type.should == :encrypted
-    end
+        it "decrypts message that was encrypted for self and other recipients" do
+          plaintext = "Hello world!"
+          alice = Akero.new
+          bob   = Akero.new
+          ciphertext = subject.encrypt([alice.public_key, subject.public_key, bob.public_key], plaintext, ascii_armor)
+          msg = subject.receive(ciphertext)
+          msg.body.should == plaintext
+          msg.type.should == :encrypted
+        end
 
-    it "fails to decrypt message that was encrypted only for other recipients" do
-      lambda {
-        plaintext = "Hello world!"
-        alice = Akero.new
-        bob   = Akero.new
-        ciphertext = subject.encrypt([alice.public_key, bob.public_key], plaintext)
-        msg = subject.receive(ciphertext)
-        msg.body.should == plaintext
-        msg.type.should == :encrypted
-      }.should raise_error RuntimeError, Akero::ERR_DECRYPT
-    end
+        it "fails to decrypt message that was encrypted only for other recipients" do
+          lambda {
+            plaintext = "Hello world!"
+            alice = Akero.new
+            bob   = Akero.new
+            ciphertext = subject.encrypt([alice.public_key, bob.public_key], plaintext, ascii_armor)
+            msg = subject.receive(ciphertext)
+            msg.body.should == plaintext
+            msg.type.should == :encrypted
+          }.should raise_error RuntimeError, Akero::ERR_DECRYPT
+        end
 
-    it "extracts signature from signed message" do
-      plaintext = "Hello world!"
-      alice = Akero.new
-      signed_msg = subject.sign(plaintext)
-      msg = alice.receive(signed_msg)
-      msg.body.should == plaintext
-      msg.type.should == :signed
-    end
+        it "extracts signature from signed message" do
+          plaintext = "Hello world!"
+          alice = Akero.new
+          signed_msg = subject.sign(plaintext, ascii_armor)
+          msg = alice.receive(signed_msg)
+          msg.body.should == plaintext
+          msg.type.should == :signed
+        end
 
-    it "raises RuntimeError on invalid message" do
-      lambda {
-        subject.receive("foobar")
-      }.should raise_error RuntimeError #, Akero::ERR_MSG_MALFORMED_ENV
-    end
+        it "raises RuntimeError on invalid message" do
+          lambda {
+            subject.receive("foobar")
+          }.should raise_error RuntimeError #, Akero::ERR_MSG_MALFORMED_ENV
+        end
 
-    it "raises RuntimeError when inner does not match outer signature" do
-      lambda {
-        oscar = Akero.new
-        raw_key = subject.send(:instance_variable_get, '@cert')
-        a = subject.send(:_encrypt, [raw_key], subject.send(:_sign, 'foobar'))
-        b = oscar.send(:_sign, a).to_s
-        c = Akero.replate(b, Akero::PLATE_CRYPTED)
-        subject.receive(c)
-      }.should raise_error RuntimeError, Akero::ERR_MSG_CORRUPT_CERT
-    end
+        it "raises RuntimeError when payload does not match envelope signature" do
+          lambda {
+            oscar = Akero.new
+            raw_key = subject.send(:instance_variable_get, '@cert')
+            a = subject.send(:_encrypt, [raw_key], subject.send(:_sign, 'foobar'))
+            b = oscar.send(:_sign, a)
+            c = ascii_armor ? Akero.replate(b.to_s, Akero::PLATE_CRYPTED) : b.to_der
+            subject.receive(c)
+          }.should raise_error RuntimeError, Akero::ERR_MSG_CORRUPT_CERT
+        end
 
-    it "raises RuntimeError on malformed inner message" do
-      lambda {
-        key, cert = subject.send(:generate_keypair, 1024)
-        env = OpenSSL::PKCS7::sign(cert, key, 0xff.chr, [], OpenSSL::PKCS7::BINARY)
-        broken_msg = Akero.replate(env.to_s, Akero::PLATE_CRYPTED)
-        subject.receive(broken_msg)
-      }.should raise_error RuntimeError, Akero::ERR_MSG_MALFORMED_BODY
-    end
+        it "raises RuntimeError on malformed inner message" do
+          lambda {
+            key, cert = subject.send(:generate_keypair, 1024)
+            env = OpenSSL::PKCS7::sign(cert, key, 0xff.chr, [], OpenSSL::PKCS7::BINARY)
+            broken_msg = Akero.replate(env.to_s, Akero::PLATE_CRYPTED)
+            subject.receive(broken_msg)
+          }.should raise_error RuntimeError, Akero::ERR_MSG_MALFORMED_BODY
+        end
 
-    it "raises RuntimeError on unsigned message" do
-      lambda {
-        raw_key = subject.send(:instance_variable_get, '@cert')
-        env = OpenSSL::PKCS7::encrypt([raw_key], 'foobar', OpenSSL::Cipher::new("AES-256-CFB"), OpenSSL::PKCS7::BINARY)
-        broken_msg = Akero.replate(env.to_s, Akero::PLATE_CRYPTED)
-        subject.receive(broken_msg)
-      }.should raise_error RuntimeError, Akero::ERR_MSG_TOO_MANY_SIGNERS
+        it "raises RuntimeError on unsigned message" do
+          lambda {
+            raw_key = subject.send(:instance_variable_get, '@cert')
+            env = OpenSSL::PKCS7::encrypt([raw_key], 'foobar', OpenSSL::Cipher::new("AES-256-CFB"), OpenSSL::PKCS7::BINARY)
+            broken_msg = Akero.replate(env.to_s, Akero::PLATE_CRYPTED)
+            subject.receive(broken_msg)
+          }.should raise_error RuntimeError, Akero::ERR_MSG_TOO_MANY_SIGNERS
+        end
+      end
     end
   end
  
