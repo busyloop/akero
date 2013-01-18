@@ -40,6 +40,7 @@ signed_msg = alice.sign("Hello world!")
 # Alice's fingerprint and public key from it
 msg = bob.receive(signed_msg)
 msg.body # => "Hello world!"
+msg.type # => :signed
 msg.from # => "AK:12:34:56:..."
 msg.from_pk # => "(alice-public-key)"
 
@@ -49,6 +50,7 @@ bobs_msg = bob.encrypt(msg.from_pk, "Hello Alice!")
 # Alice can receive it...
 msg = alice.receive(bobs_msg)
 msg.body # => "Hello Alice!"
+msg.type # => :encrypted
 msg.from # => "AK:ab:cd:ef:..."
 msg.from_pk # => "(bob-public-key)"
 
@@ -68,8 +70,8 @@ new_alice = Akero.load(File.read('/tmp/alice.akr'))
 # In production Alice disables the armoring
 # for better performance.
 signed_msg = alice.sign("Hello world!", false)
-msg = alice.encrypt(alice.public_key, "Hello!", false)
-puts alice.receive(msg).body # => "Hello!"
+encrypted_msg = alice.encrypt(alice.public_key, "Hello!", false)
+puts alice.receive(encrypted_msg).body # => "Hello!"
 
 ```
 
