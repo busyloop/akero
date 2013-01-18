@@ -4,7 +4,7 @@ Akero ([ἄγγελος](http://en.wiktionary.org/wiki/%F0%90%80%80%F0%90%80%90%
 
 Under the hood Akero uses standard OpenSSL primitives. Each instance wraps a [RSA](http://en.wikipedia.org/wiki/RSA)-keypair, a corresponding [X.509 certificate](http://en.wikipedia.org/wiki/X.509) and exchanges self-signed messages ([PKCS#7](https://tools.ietf.org/html/rfc2315)) with other instances.
 
-Akero does not try to be a substitute for a fully featured [PKI](http://en.wikipedia.org/wiki/Public_key_infrastructure). It is meant to be used as a building block in scenarios where trust-relationships and keyrings can be externally managed, and where the complexity of traditional solutions (X.509 PKI, OpenPGP, custom RSA) yields no tangible benefits.
+Akero does not try to be a substitute for a fully featured [PKI](http://en.wikipedia.org/wiki/Public_key_infrastructure). It is meant to be used as a building block in scenarios where trust-relationships and keyrings can be managed externally, and where the complexity of traditional solutions (X.509 PKI, OpenPGP, custom RSA) yields no tangible benefits.
 
 ## Features
 
