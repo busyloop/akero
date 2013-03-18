@@ -18,12 +18,3 @@ task :benchmark do
   Akero::Benchmark.run!
 end
 
-namespace :docs do
-  task :push do
-    `bl_www_sync akero coverage`
-  end
-
-  task :loc do
-    puts `grep -v '^\\s*#' lib/akero.rb | grep -v '^$' | wc -l`
-  end
-end

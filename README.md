@@ -12,7 +12,7 @@ Akero does not try to be a substitute for a fully featured [PKI](http://en.wikip
 * Low complexity; easy to use, understand and review (only 192 lines of code)
 * Transport agnostic; messages and certificates are self-contained and optionally ascii-armored (base64)
 * Built on standard OpenSSL primitives, no homegrown algorithms
-* [100%](https://busyloop.net/oss/akero/coverage/) test coverage
+* [100%](http://busyloop.github.com/akero/coverage/) test coverage
 
 
 ## Installation
@@ -77,7 +77,7 @@ puts alice.receive(encrypted_msg).body # => "Hello!"
 
 ## Documentation
 
-* [API Docs](http://rubydoc.info/gems/akero/Akero)
+* [API Docs](http://busyloop.github.com/akero/doc/frames.html)
 * [Spec](https://github.com/busyloop/akero/blob/master/spec/akero_spec.rb)
 
 ## Benchmarks
