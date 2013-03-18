@@ -1,0 +1,1103 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>
+  Class: Akero
+  
+    &mdash; Documentation by YARD 0.8.3
+  
+</title>
+
+  <link rel="stylesheet" href="css/style.css" type="text/css" media="screen" charset="utf-8" />
+
+  <link rel="stylesheet" href="css/common.css" type="text/css" media="screen" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  hasFrames = window.top.frames.main ? true : false;
+  relpath = '';
+  framesUrl = "frames.html#!" + escape(window.location.href);
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div id="header">
+      <div id="menu">
+  
+    <a href="_index.html">Index (A)</a> &raquo;
+    
+    
+    <span class="title">Akero</span>
+  
+
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
+</div>
+
+      <div id="search">
+  
+    <a class="full_list_link" id="class_list_link"
+        href="class_list.html">
+      Class List
+    </a>
+  
+    <a class="full_list_link" id="method_list_link"
+        href="method_list.html">
+      Method List
+    </a>
+  
+    <a class="full_list_link" id="file_list_link"
+        href="file_list.html">
+      File List
+    </a>
+  
+</div>
+      <div class="clear"></div>
+    </div>
+
+    <iframe id="search_frame"></iframe>
+
+    <div id="content"><h1>Class: Akero
+  
+  
+  
+</h1>
+
+<dl class="box">
+  
+    <dt class="r1">Inherits:</dt>
+    <dd class="r1">
+      <span class="inheritName">Object</span>
+      
+        <ul class="fullTree">
+          <li>Object</li>
+          
+            <li class="next">Akero</li>
+          
+        </ul>
+        <a href="#" class="inheritanceTree">show all</a>
+      
+      </dd>
+    
+  
+  
+    
+  
+    
+  
+  
+  
+    <dt class="r2 last">Defined in:</dt>
+    <dd class="r2 last">lib/akero.rb<span class="defines">,<br />
+  lib/akero.rb,<br /> lib/akero/version.rb,<br /> lib/akero/benchmark.rb</span>
+</dd>
+  
+</dl>
+<div class="clear"></div>
+
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    Akero is an easy-to-use library for peer-to-peer public key cryptography.
+
+Tested on: MRI 1.8.7, MRI 1.9.2, MRI 1.9.3, RBX 1.8, RBX 1.9
+(JRuby may be added in the future but is currently NOT supported)
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><h2>Defined Under Namespace</h2>
+<p class="children">
+  
+    
+  
+    
+      <strong class="classes">Classes:</strong> <span class='object_link'><a href="Akero/Message.html" title="Akero::Message (class)">Message</a></span>
+    
+  
+</p>
+
+  <h2>Constant Summary</h2>
+  
+    <dl class="constants">
+      
+        <dt id="DEFAULT_RSA_BITS-constant" class="">DEFAULT_RSA_BITS =
+          
+        </dt>
+        <dd><pre class="code"><span class='int'>2048</span></pre></dd>
+      
+        <dt id="VERSION-constant" class="">VERSION =
+          
+        </dt>
+        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>1.0.2</span><span class='tstring_end'>&quot;</span></span></pre></dd>
+      
+    </dl>
+  
+
+
+
+
+
+
+
+  
+    <h2>
+      Class Method Summary
+      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#load-class_method" title="load (class method)">+ (Akero) <strong>load</strong>(private_key) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>Load an Akero identity.</div></span>
+  
+</li>
+
+      
+    </ul>
+  
+    <h2>
+      Instance Method Summary
+      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#encrypt-instance_method" title="#encrypt (instance method)">- (String) <strong>encrypt</strong>(to, plaintext) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>Sign-&gt;encrypt-&gt;sign a message for 1 or more recipients.</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#id-instance_method" title="#id (instance method)">- (String) <strong>id</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>Unique fingerprint of this Akero keypair.</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#initialize-instance_method" title="#initialize (instance method)">- (Akero) <strong>initialize</strong>(rsa_bits = DEFAULT_RSA_BITS, sign_digest = OpenSSL::Digest::SHA512) </a>
+    
+
+    
+  </span>
+  
+  
+    <span class="note title constructor">constructor</span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>Create a new Akero instance.</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#private_key-instance_method" title="#private_key (instance method)">- (String) <strong>private_key</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>Private key (do not share this with anyone!).</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#public_key-instance_method" title="#public_key (instance method)">- (String) <strong>public_key</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>Akero public key.</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#receive-instance_method" title="#receive (instance method)">- (Akero::Message) <strong>receive</strong>(ciphertext) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>Receive an Akero message.</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#sign-instance_method" title="#sign (instance method)">- (String) <strong>sign</strong>(plaintext) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>Sign a message.</div></span>
+  
+</li>
+
+      
+    </ul>
+  
+
+<div id="constructor_details" class="method_details_list">
+  <h2>Constructor Details</h2>
+  
+    <div class="method_details first">
+  <h3 class="signature first" id="initialize-instance_method">
+  
+    - (<tt><span class='object_link'><a href="" title="Akero (class)">Akero</a></span></tt>) <strong>initialize</strong>(rsa_bits = DEFAULT_RSA_BITS, sign_digest = OpenSSL::Digest::SHA512) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    Create a new Akero instance.
+
+  </div>
+</div>
+<div class="tags">
+  
+  <div class="examples">
+    <p class="tag_title">Examples:</p>
+    
+      
+        <p class="example_title"><div class='inline'>Create new Akero instance with default settings</div></p>
+      
+      <pre class="example code"><span class='const'>Akero</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span></pre>
+    
+      
+        <p class="example_title"><div class='inline'>Create new Akero instance with a 4096-bit key</div></p>
+      
+      <pre class="example code"><span class='const'>Akero</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='int'>4096</span><span class='rparen'>)</span></pre>
+    
+      
+        <p class="example_title"><div class='inline'>Create new Akero instance with a 4096-bit key and SHA512 digest</div></p>
+      
+      <pre class="example code"><span class='const'>Akero</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='int'>4096</span><span class='comma'>,</span> <span class='const'>OpenSSL</span><span class='op'>::</span><span class='const'>Digest</span><span class='op'>::</span><span class='const'>SHA512</span><span class='rparen'>)</span></pre>
+    
+  </div>
+<p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>rsa_bits</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>DEFAULT_RSA_BITS</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>RSA key length</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>sign_digest</span>
+      
+      
+        <span class='type'>(<tt>OpenSSL::Digest</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>OpenSSL::Digest::SHA512</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>Signature digest</div>
+      
+    </li>
+  
+</ul>
+
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+106
+107
+108</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/akero.rb', line 106</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_rsa_bits'>rsa_bits</span><span class='op'>=</span><span class='const'>DEFAULT_RSA_BITS</span><span class='comma'>,</span> <span class='id identifier rubyid_sign_digest'>sign_digest</span><span class='op'>=</span><span class='const'>OpenSSL</span><span class='op'>::</span><span class='const'>Digest</span><span class='op'>::</span><span class='const'>SHA512</span><span class='rparen'>)</span>
+  <span class='ivar'>@key</span><span class='comma'>,</span> <span class='ivar'>@cert</span> <span class='op'>=</span> <span class='id identifier rubyid_generate_keypair'>generate_keypair</span><span class='lparen'>(</span><span class='id identifier rubyid_rsa_bits'>rsa_bits</span><span class='comma'>,</span> <span class='id identifier rubyid_sign_digest'>sign_digest</span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='id identifier rubyid_rsa_bits'>rsa_bits</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+  
+</div>
+
+
+  <div id="class_method_details" class="method_details_list">
+    <h2>Class Method Details</h2>
+
+    
+      <div class="method_details first">
+  <h3 class="signature first" id="load-class_method">
+  
+    + (<tt><span class='object_link'><a href="" title="Akero (class)">Akero</a></span></tt>) <strong>load</strong>(private_key) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    Load an Akero identity.
+
+  </div>
+</div>
+<div class="tags">
+  
+  <div class="examples">
+    <p class="tag_title">Examples:</p>
+    
+      
+        <p class="example_title"><div class='inline'>Load previously stored private key</div></p>
+      
+      <pre class="example code"><span class='const'>Akero</span><span class='period'>.</span><span class='id identifier rubyid_load'>load</span><span class='lparen'>(</span><span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_read'>read</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>/tmp/alice.akr</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span><span class='rparen'>)</span></pre>
+    
+  </div>
+<p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>private_key</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>Akero private key</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="" title="Akero (class)">Akero</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>New Akero instance</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/akero.rb', line 117</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_load'>load</span><span class='lparen'>(</span><span class='id identifier rubyid_private_key'>private_key</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_inner'>inner</span> <span class='op'>=</span> <span class='const'>Base64</span><span class='period'>.</span><span class='id identifier rubyid_decode64'>decode64</span><span class='lparen'>(</span><span class='id identifier rubyid_private_key'>private_key</span><span class='lbracket'>[</span><span class='const'>PKEY_HEADER</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span><span class='op'>..</span><span class='id identifier rubyid_private_key'>private_key</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span><span class='op'>-</span><span class='const'>PKEY_FOOTER</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+  <span class='kw'>if</span> <span class='id identifier rubyid_inner'>inner</span><span class='lbracket'>[</span><span class='int'>0</span><span class='op'>..</span><span class='int'>63</span><span class='rbracket'>]</span> <span class='op'>!=</span> <span class='const'>OpenSSL</span><span class='op'>::</span><span class='const'>Digest</span><span class='op'>::</span><span class='const'>SHA512</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_inner'>inner</span><span class='lbracket'>[</span><span class='int'>64</span><span class='op'>..</span><span class='op'>-</span><span class='int'>1</span><span class='rbracket'>]</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_digest'>digest</span>
+    <span class='id identifier rubyid_raise'>raise</span> <span class='const'>RuntimeError</span><span class='comma'>,</span> <span class='const'>ERR_PKEY_CORRUPT</span>
+  <span class='kw'>end</span>
+  <span class='id identifier rubyid_cert_len'>cert_len</span> <span class='op'>=</span> <span class='id identifier rubyid_inner'>inner</span><span class='lbracket'>[</span><span class='int'>64</span><span class='op'>..</span><span class='int'>65</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_unpack'>unpack</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>S</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span><span class='lbracket'>[</span><span class='int'>0</span><span class='rbracket'>]</span>
+  <span class='id identifier rubyid_akero'>akero</span> <span class='op'>=</span> <span class='const'>Akero</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='kw'>nil</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_akero'>akero</span><span class='period'>.</span><span class='id identifier rubyid_instance_variable_set'>instance_variable_set</span><span class='lparen'>(</span><span class='symbol'>:@cert</span><span class='comma'>,</span> <span class='const'>OpenSSL</span><span class='op'>::</span><span class='const'>X509</span><span class='op'>::</span><span class='const'>Certificate</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_inner'>inner</span><span class='lbracket'>[</span><span class='int'>66</span><span class='op'>..</span><span class='int'>66</span><span class='op'>+</span><span class='id identifier rubyid_cert_len'>cert_len</span><span class='rbracket'>]</span><span class='rparen'>)</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_akero'>akero</span><span class='period'>.</span><span class='id identifier rubyid_instance_variable_set'>instance_variable_set</span><span class='lparen'>(</span><span class='symbol'>:@key</span><span class='comma'>,</span> <span class='const'>OpenSSL</span><span class='op'>::</span><span class='const'>PKey</span><span class='op'>::</span><span class='const'>RSA</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_inner'>inner</span><span class='lbracket'>[</span><span class='int'>66</span><span class='op'>+</span><span class='id identifier rubyid_cert_len'>cert_len</span><span class='op'>..</span><span class='op'>-</span><span class='int'>1</span><span class='rbracket'>]</span><span class='rparen'>)</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_akero'>akero</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+  <div id="instance_method_details" class="method_details_list">
+    <h2>Instance Method Details</h2>
+
+    
+      <div class="method_details first">
+  <h3 class="signature first" id="encrypt-instance_method">
+  
+    - (<tt>String</tt>) <strong>encrypt</strong>(to, plaintext) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    Sign-&gt;encrypt-&gt;sign a message for 1 or more recipients.
+
+Only the listed recipients can decrypt the message-body
+but anyone can extract the sender's public key.
+
+  </div>
+</div>
+<div class="tags">
+  
+  <div class="examples">
+    <p class="tag_title">Examples:</p>
+    
+      
+        <p class="example_title"><div class='inline'>Alice encrypts a message to Bob</div></p>
+      
+      <pre class="example code"><span class='id identifier rubyid_alice'>alice</span> <span class='op'>=</span> <span class='const'>Akero</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
+<span class='id identifier rubyid_bob'>bob</span> <span class='op'>=</span> <span class='const'>Akero</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
+<span class='id identifier rubyid_ciphertext'>ciphertext</span> <span class='op'>=</span> <span class='id identifier rubyid_alice'>alice</span><span class='period'>.</span><span class='id identifier rubyid_encrypt'>encrypt</span><span class='lparen'>(</span><span class='id identifier rubyid_bob'>bob</span><span class='period'>.</span><span class='id identifier rubyid_public_key'>public_key</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Hello Bob!</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span></pre>
+    
+      
+        <p class="example_title"><div class='inline'>Alice encrypts a message to Bob and Charlie</div></p>
+      
+      <pre class="example code"><span class='id identifier rubyid_alice'>alice</span> <span class='op'>=</span> <span class='const'>Akero</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
+<span class='id identifier rubyid_bob'>bob</span> <span class='op'>=</span> <span class='const'>Akero</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
+<span class='id identifier rubyid_charlie'>charlie</span> <span class='op'>=</span> <span class='const'>Akero</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
+<span class='id identifier rubyid_ciphertext'>ciphertext</span> <span class='op'>=</span> <span class='id identifier rubyid_alice'>alice</span><span class='period'>.</span><span class='id identifier rubyid_encrypt'>encrypt</span><span class='lparen'>(</span><span class='lbracket'>[</span><span class='id identifier rubyid_bob'>bob</span><span class='period'>.</span><span class='id identifier rubyid_public_key'>public_key</span><span class='comma'>,</span> <span class='id identifier rubyid_charlie'>charlie</span><span class='period'>.</span><span class='id identifier rubyid_public_key'>public_key</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Hello Bob and Charlie!</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span></pre>
+    
+  </div>
+<p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>to</span>
+      
+      
+        <span class='type'>(<tt>Array</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>Akero public keys of recipients</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>plaintext</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>The message to encrypt (binary safe)</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>Akero secret message</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/akero.rb', line 188</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_encrypt'>encrypt</span><span class='lparen'>(</span><span class='id identifier rubyid_to'>to</span><span class='comma'>,</span> <span class='id identifier rubyid_plaintext'>plaintext</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_to'>to</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='id identifier rubyid_to'>to</span><span class='rbracket'>]</span> <span class='kw'>unless</span> <span class='id identifier rubyid_to'>to</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span> <span class='const'>Array</span>
+  <span class='id identifier rubyid_to'>to</span> <span class='op'>=</span> <span class='id identifier rubyid_to'>to</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_e'>e</span><span class='op'>|</span> 
+    <span class='kw'>case</span> <span class='id identifier rubyid_e'>e</span>
+      <span class='kw'>when</span> <span class='const'>String</span>
+        <span class='kw'>begin</span>
+          <span class='const'>OpenSSL</span><span class='op'>::</span><span class='const'>X509</span><span class='op'>::</span><span class='const'>Certificate</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='const'>Akero</span><span class='period'>.</span><span class='id identifier rubyid_replate'>replate</span><span class='lparen'>(</span><span class='id identifier rubyid_e'>e</span><span class='comma'>,</span> <span class='const'>Akero</span><span class='op'>::</span><span class='const'>PLATE_CERT</span><span class='comma'>,</span> <span class='kw'>true</span><span class='rparen'>)</span><span class='rparen'>)</span>
+        <span class='kw'>rescue</span> <span class='const'>OpenSSL</span><span class='op'>::</span><span class='const'>X509</span><span class='op'>::</span><span class='const'>CertificateError</span>
+          <span class='id identifier rubyid_raise'>raise</span> <span class='const'>RuntimeError</span><span class='comma'>,</span> <span class='const'>ERR_INVALID_RECIPIENT_CERT</span>
+        <span class='kw'>end</span>
+      <span class='kw'>else</span>
+        <span class='id identifier rubyid_raise'>raise</span> <span class='const'>RuntimeError</span><span class='comma'>,</span> <span class='const'>ERR_INVALID_RECIPIENT</span>
+    <span class='kw'>end</span>
+  <span class='rbrace'>}</span>
+  <span class='const'>Akero</span><span class='period'>.</span><span class='id identifier rubyid_replate'>replate</span><span class='lparen'>(</span><span class='id identifier rubyid__sign'>_sign</span><span class='lparen'>(</span><span class='id identifier rubyid__encrypt'>_encrypt</span><span class='lparen'>(</span><span class='id identifier rubyid_to'>to</span><span class='comma'>,</span> <span class='id identifier rubyid__sign'>_sign</span><span class='lparen'>(</span><span class='id identifier rubyid_plaintext'>plaintext</span><span class='comma'>,</span> <span class='kw'>false</span><span class='rparen'>)</span><span class='rparen'>)</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='comma'>,</span> <span class='const'>PLATE_CRYPTED</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="id-instance_method">
+  
+    - (<tt>String</tt>) <strong>id</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    Unique fingerprint of this Akero keypair.
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>Akero fingerprint</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+88
+89
+90</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/akero.rb', line 88</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_id'>id</span>
+  <span class='const'>Akero</span><span class='period'>.</span><span class='id identifier rubyid_fingerprint_from_cert'>fingerprint_from_cert</span><span class='lparen'>(</span><span class='ivar'>@cert</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="private_key-instance_method">
+  
+    - (<tt>String</tt>) <strong>private_key</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    Private key (do not share this with anyone!)
+
+  </div>
+</div>
+<div class="tags">
+  
+  <div class="examples">
+    <p class="tag_title">Examples:</p>
+    
+      
+        <p class="example_title"><div class='inline'>Save and load an Akero identity</div></p>
+      
+      <pre class="example code"><span class='id identifier rubyid_alice'>alice</span> <span class='op'>=</span> <span class='const'>Akero</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
+<span class='comment'># Save
+</span><span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_open'>open</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>/tmp/alice.akr</span><span class='tstring_end'>'</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>w</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_f'>f</span><span class='op'>|</span> <span class='id identifier rubyid_f'>f</span><span class='period'>.</span><span class='id identifier rubyid_write'>write</span><span class='lparen'>(</span><span class='id identifier rubyid_alice'>alice</span><span class='period'>.</span><span class='id identifier rubyid_private_key'>private_key</span><span class='rparen'>)</span> <span class='rbrace'>}</span>
+<span class='comment'># Load
+</span><span class='id identifier rubyid_new_alice'>new_alice</span> <span class='op'>=</span> <span class='const'>Akero</span><span class='period'>.</span><span class='id identifier rubyid_load'>load</span><span class='lparen'>(</span><span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_read'>read</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>/tmp/alice.akr</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span><span class='rparen'>)</span></pre>
+    
+  </div>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>Private key (ascii armored)</div>
+      
+    </li>
+  
+</ul>
+
+  <p class="tag_title">See Also:</p>
+  <ul class="see">
+    
+      <li>#load</li>
+    
+  </ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/akero.rb', line 150</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_private_key'>private_key</span>
+  <span class='comment'># We do not use PKCS#12 (&quot;PFX&quot;) for serialization here
+</span>  <span class='comment'># because of http://www.cs.auckland.ac.nz/~pgut001/pubs/pfx.html
+</span>  <span class='id identifier rubyid_cert_der'>cert_der</span> <span class='op'>=</span> <span class='ivar'>@cert</span><span class='period'>.</span><span class='id identifier rubyid_to_der'>to_der</span>
+  <span class='id identifier rubyid_out'>out</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='id identifier rubyid_cert_der'>cert_der</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_pack'>pack</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>S</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_out'>out</span> <span class='op'>&lt;&lt;</span> <span class='id identifier rubyid_cert_der'>cert_der</span>
+  <span class='id identifier rubyid_out'>out</span> <span class='op'>&lt;&lt;</span> <span class='ivar'>@key</span><span class='period'>.</span><span class='id identifier rubyid_to_der'>to_der</span>
+  <span class='id identifier rubyid_out'>out</span><span class='period'>.</span><span class='id identifier rubyid_insert'>insert</span><span class='lparen'>(</span><span class='int'>0</span><span class='comma'>,</span> <span class='const'>OpenSSL</span><span class='op'>::</span><span class='const'>Digest</span><span class='op'>::</span><span class='const'>SHA512</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_out'>out</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_digest'>digest</span><span class='rparen'>)</span>
+  <span class='const'>PKEY_HEADER</span><span class='op'>+</span><span class='const'>Base64</span><span class='period'>.</span><span class='id identifier rubyid_encode64'>encode64</span><span class='lparen'>(</span><span class='id identifier rubyid_out'>out</span><span class='rparen'>)</span><span class='op'>+</span><span class='const'>PKEY_FOOTER</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="public_key-instance_method">
+  
+    - (<tt>String</tt>) <strong>public_key</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    Akero public key.
+
+Share this with other Akero instances that you
+wish to receive encrypted messages from.
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>Public key (ascii armored)</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+135
+136
+137</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/akero.rb', line 135</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_public_key'>public_key</span>
+  <span class='const'>Akero</span><span class='op'>::</span><span class='id identifier rubyid_replate'>replate</span><span class='lparen'>(</span><span class='ivar'>@cert</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='comma'>,</span> <span class='const'>Akero</span><span class='op'>::</span><span class='const'>PLATE_CERT</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="receive-instance_method">
+  
+    - (<tt><span class='object_link'><a href="Akero/Message.html" title="Akero::Message (class)">Akero::Message</a></span></tt>) <strong>receive</strong>(ciphertext) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    Receive an Akero message.
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>ciphertext</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>Akero Message</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="Akero/Message.html" title="Akero::Message (class)">Akero::Message</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>Message_body, signer_certificate, body_type</div>
+      
+    </li>
+  
+</ul>
+<p class="tag_title">Raises:</p>
+<ul class="raise">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>RuntimeError</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/akero.rb', line 209</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_receive'>receive</span><span class='lparen'>(</span><span class='id identifier rubyid_ciphertext'>ciphertext</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_ciphertext'>ciphertext</span> <span class='op'>=</span> <span class='const'>Akero</span><span class='period'>.</span><span class='id identifier rubyid_replate'>replate</span><span class='lparen'>(</span><span class='id identifier rubyid_ciphertext'>ciphertext</span><span class='comma'>,</span> <span class='const'>Akero</span><span class='op'>::</span><span class='const'>PLATE_CRYPTED</span><span class='comma'>,</span> <span class='kw'>true</span><span class='rparen'>)</span>
+  <span class='kw'>begin</span>
+    <span class='id identifier rubyid_body'>body</span><span class='comma'>,</span> <span class='id identifier rubyid_signer_cert'>signer_cert</span><span class='comma'>,</span> <span class='id identifier rubyid_body_type'>body_type</span> <span class='op'>=</span> <span class='id identifier rubyid_verify'>verify</span><span class='lparen'>(</span><span class='id identifier rubyid_ciphertext'>ciphertext</span><span class='comma'>,</span> <span class='kw'>nil</span><span class='rparen'>)</span>
+  <span class='kw'>rescue</span> <span class='const'>ArgumentError</span>
+    <span class='id identifier rubyid_raise'>raise</span> <span class='const'>RuntimeError</span><span class='comma'>,</span> <span class='const'>ERR_MSG_MALFORMED_ENV</span>
+  <span class='kw'>end</span>
+
+  <span class='kw'>case</span> <span class='id identifier rubyid_body_type'>body_type</span><span class='period'>.</span><span class='id identifier rubyid_ord'>ord</span>
+    <span class='kw'>when</span> <span class='int'>0x00</span>
+      <span class='comment'># public message (signed)
+</span>      <span class='kw'>return</span> <span class='const'>Message</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_body'>body</span><span class='comma'>,</span> <span class='id identifier rubyid_signer_cert'>signer_cert</span><span class='comma'>,</span> <span class='symbol'>:signed</span><span class='rparen'>)</span>
+    <span class='kw'>when</span> <span class='int'>0x01</span>
+      <span class='comment'># private message (signed, crypted, signed)
+</span>      <span class='id identifier rubyid_signed_plaintext'>signed_plaintext</span> <span class='op'>=</span> <span class='id identifier rubyid__decrypt'>_decrypt</span><span class='lparen'>(</span><span class='id identifier rubyid_body'>body</span><span class='rparen'>)</span>
+      <span class='id identifier rubyid_plaintext'>plaintext</span><span class='comma'>,</span> <span class='id identifier rubyid_verified_cert'>verified_cert</span><span class='comma'>,</span> <span class='id identifier rubyid_body_type'>body_type</span> <span class='op'>=</span> <span class='id identifier rubyid_verify'>verify</span><span class='lparen'>(</span><span class='id identifier rubyid_signed_plaintext'>signed_plaintext</span><span class='comma'>,</span> <span class='id identifier rubyid_signer_cert'>signer_cert</span><span class='rparen'>)</span>
+      <span class='id identifier rubyid_msg'>msg</span> <span class='op'>=</span> <span class='const'>Message</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_plaintext'>plaintext</span><span class='comma'>,</span> <span class='id identifier rubyid_signer_cert'>signer_cert</span><span class='comma'>,</span> <span class='symbol'>:encrypted</span><span class='rparen'>)</span>
+      <span class='kw'>return</span> <span class='id identifier rubyid_msg'>msg</span>
+  <span class='kw'>end</span>
+  <span class='id identifier rubyid_raise'>raise</span> <span class='const'>RuntimeError</span><span class='comma'>,</span> <span class='const'>ERR_MSG_MALFORMED_BODY</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="sign-instance_method">
+  
+    - (<tt>String</tt>) <strong>sign</strong>(plaintext) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    Sign a message.
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>plaintext</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>The message to sign (binary safe)</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>Akero signed message</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+165
+166
+167</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/akero.rb', line 165</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_sign'>sign</span><span class='lparen'>(</span><span class='id identifier rubyid_plaintext'>plaintext</span><span class='rparen'>)</span>
+  <span class='const'>Akero</span><span class='period'>.</span><span class='id identifier rubyid_replate'>replate</span><span class='lparen'>(</span><span class='id identifier rubyid__sign'>_sign</span><span class='lparen'>(</span><span class='id identifier rubyid_plaintext'>plaintext</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='comma'>,</span> <span class='const'>Akero</span><span class='op'>::</span><span class='const'>PLATE_SIGNED</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+</div>
+
+    <div id="footer">
+  Generated on Wed Jan 16 04:50:59 2013 by
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.8.3 (ruby-1.9.3).
+</div>
+
+  </body>
+</html>
