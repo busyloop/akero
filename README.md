@@ -46,7 +46,7 @@ msg.from_pk # => "(alice-public-key)"
 
 # Bob encrypts a message for Alice
 bobs_msg = bob.encrypt(msg.from_pk, "Hello Alice!")
- 
+
 # Alice can receive it...
 msg = alice.receive(bobs_msg)
 msg.body # => "Hello Alice!"
@@ -82,8 +82,8 @@ puts alice.receive(encrypted_msg).body # => "Hello!"
 
 ## Benchmarks
 
-![Throughput](http://github.com/busyloop/akero/raw/master/benchmark/bm_rate.png)
-![Message size](http://github.com/busyloop/akero/raw/master/benchmark/bm_size.png)
+![Throughput](https://github.com/busyloop/akero/raw/master/benchmark/bm_rate.png?raw=true)
+![Message size](https://github.com/busyloop/akero/raw/master/benchmark/bm_size.png?raw=true)
 
 The above charts were generated using MRI 1.9.3p362 (x86_64-linux) on an [AMD Turion II Neo N40L](http://www.cpubenchmark.net/cpu.php?cpu=AMD+Turion+II+Neo+N40L+Dual-Core) CPU.
 You may run the benchmarks on your own machine with `rake benchmark`.
