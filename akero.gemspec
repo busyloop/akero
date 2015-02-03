@@ -22,7 +22,7 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency 'guard-rspec'
   gem.add_development_dependency 'rake'
   gem.add_development_dependency 'simplecov'
-  gem.add_development_dependency 'rspec'
+  gem.add_development_dependency 'rspec', '= 2.12.0'
   gem.add_development_dependency 'b'
   gem.add_development_dependency 'gnuplot'
   gem.add_development_dependency 'yard'
