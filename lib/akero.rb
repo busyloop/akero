@@ -1,7 +1,7 @@
 # Copyright (c) 2012 moe@busyloop.net
-# 
+#
 # MIT License
-# 
+#
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
 # "Software"), to deal in the Software without restriction, including
@@ -9,10 +9,10 @@
 # distribute, sublicense, and/or sell copies of the Software, and to
 # permit persons to whom the Software is furnished to do so, subject to
 # the following conditions:
-# 
+#
 # The above copyright notice and this permission notice shall be
 # included in all copies or substantial portions of the Software.
-# 
+#
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
 # EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 # MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
@@ -28,8 +28,9 @@ require 'base64'
 
 # Akero is an easy-to-use library for peer-to-peer public key cryptography.
 #
-# Tested on: MRI 1.8.7, MRI 1.9.2, MRI 1.9.3, RBX 1.8, RBX 1.9
-# (JRuby may be added in the future but is currently NOT supported)
+# The only officially supported ruby runtime is MRI (latest version).
+# Regardless, Akero is known to work on any recent ruby version except JRuby.
+# Tested on: MRI 1.8.7, MRI 1.9.2, MRI 1.9.3, RBX 1.8, RBX 1.9, MRI 2.3.*, and more.
 class Akero
   # Akero::Message wraps a received message.
   class Message
@@ -109,7 +110,7 @@ class Akero
   end
 
   # Load an Akero identity.
-  # 
+  #
   # @example Load previously stored private key
   #   Akero.load(File.read('/tmp/alice.akr'))
   #
@@ -138,14 +139,14 @@ class Akero
   end
 
   # Private key (do not share this with anyone!)
-  # 
+  #
   # @example Save and load an Akero identity
   #   alice = Akero.new
   #   # Save
   #   File.open('/tmp/alice.akr', 'w') { |f| f.write(alice.private_key) }
   #   # Load
   #   new_alice = Akero.load(File.read('/tmp/alice.akr'))
-  # 
+  #
   # @return [String] Private key (ascii armored)
   # @see Akero#load
   def private_key
@@ -191,7 +192,7 @@ class Akero
   # @return [String] Akero secret message
   def encrypt(to, plaintext, ascii_armor=true)
     to = [to] unless to.is_a? Array
-    to = to.map { |e| 
+    to = to.map { |e|
       case e
         when String
           begin
@@ -244,7 +245,7 @@ class Akero
   def to_s
     inspect
   end
- 
+
   #---------------------------------------------------------------------------
   protected
 
@@ -270,9 +271,9 @@ class Akero
     end
     raise RuntimeError, ERR_CERT_CORRUPT
   end
- 
+
   #---------------------------------------------------------------------------
-  private 
+  private
 
   def _decrypt(crypted_msg)
     begin
@@ -339,7 +340,7 @@ class Akero
     # valid until 2038-01-19 04:14:06 +0100
     cert.not_after = Time.at(2147483646)
     cert.public_key = rsa.public_key
-    
+
     ef = OpenSSL::X509::ExtensionFactory.new(nil, cert)
     ef.issuer_certificate = cert
     cert.extensions = [
