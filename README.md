@@ -1,4 +1,4 @@
-# Akero [![Build Status](https://travis-ci.org/busyloop/akero.png?branch=master)](https://travis-ci.org/busyloop/akero) [![Dependency Status](https://gemnasium.com/busyloop/akero.png)](https://gemnasium.com/busyloop/akero)
+# Akero [![Build Status](https://travis-ci.org/busyloop/akero.png?branch=master)](https://travis-ci.org/busyloop/akero) [![Dependency Status](https://gemnasium.com/busyloop/akero.png)](https://gemnasium.com/busyloop/akero) [![Gem Version](https://badge.fury.io/rb/akero.svg)](https://badge.fury.io/rb/akero)
 
 Akero ([ἄγγελος](http://en.wiktionary.org/wiki/%F0%90%80%80%F0%90%80%90%F0%90%80%AB), messenger) is an easy-to-use library for peer-to-peer [public key cryptography](http://en.wikipedia.org/wiki/Public-key_cryptography). It enables two or more endpoints to exchange encrypted and/or signed messages without requiring a pre-shared secret.
 
