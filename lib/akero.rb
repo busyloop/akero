@@ -81,7 +81,7 @@ class Akero
   PLATE_SIGNED = ['PKCS7', 'AKERO SIGNED MESSAGE'] # @private
   PLATE_CRYPTED = ['PKCS7', 'AKERO SECRET MESSAGE'] # @private
 
-  DEFAULT_RSA_BITS = 2048
+  DEFAULT_RSA_BITS = 4096
   DEFAULT_DIGEST = OpenSSL::Digest::SHA512
 
   # Unique fingerprint of this Akero keypair.
