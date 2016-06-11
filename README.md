@@ -20,7 +20,7 @@ Akero does not try to be a substitute for a fully featured [PKI](http://en.wikip
 `gem install akero`
 
 
-## Usage
+## Usage (API)
 
 ```ruby
 require 'akero'
@@ -72,7 +72,23 @@ new_alice = Akero.load(File.read('/tmp/alice.akr'))
 signed_msg = alice.sign("Hello world!", false)
 encrypted_msg = alice.encrypt(alice.public_key, "Hello!", false)
 puts alice.receive(encrypted_msg).body # => "Hello!"
+```
 
+## Usage (CLI)
+
+```bash
+$ akero id -i /tmp/alice.akr
+Private key not found. Generating a new 4096 bits RSA key and saving to /tmp/alice.akr ...
+AK:8B:33:5B:AB:4C:78:CA:5E:CC:F5:FE:D7:75:F2:A4:74:16:28:FB:C2
+
+$ akero id -i /tmp/bob.akr
+Private key not found. Generating a new 4096 bits RSA key and saving to /tmp/bob.akr ...
+AK:CF:B3:4C:BA:7C:9C:2E:31:2D:0D:1D:3F:F9:F4:05:F6:C7:B2:38:3F
+
+$ akero pk -i /tmp/bob.akr >/tmp/bob.pk
+
+$ echo "Hello" | akero encrypt -i /tmp/alice.akr /tmp/bob.pk | akero receive -i /tmp/bob.akr
+Hello
 ```
 
 ## Documentation

@@ -17,6 +17,8 @@ Gem::Specification.new do |gem|
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.require_paths = ["lib"]
 
+  gem.add_dependency 'optix'
+
   gem.add_development_dependency 'rb-inotify'
   gem.add_development_dependency 'guard'
   gem.add_development_dependency 'guard-rspec'
