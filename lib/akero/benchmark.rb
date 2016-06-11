@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'akero'
 require 'gnuplot'
 require 'b'
@@ -12,10 +13,10 @@ class Akero
       end
 
       def b_size
-        puts "Running size benchmark..."
+        puts 'Running size benchmark...'
 
         rnd = Random.new
-        msg_sizes = (8..14).map{|x| 2**x}
+        msg_sizes = (8..14).map { |x| 2**x }
         modes = [[2048, false], [2048, true]]
         results = {}
         modes.each do |mode|
@@ -32,9 +33,9 @@ class Akero
       end
 
       def b_timing
-        puts "Running timing benchmark..."
+        puts 'Running timing benchmark...'
 
-        msg_sizes = (8..18).map{|x| 2**x}
+        msg_sizes = (8..18).map { |x| 2**x }
         modes = [[2048, false], [2048, true]]
 
         rnd = Random.new
@@ -42,10 +43,10 @@ class Akero
         rounds = 50
         results = []
         modes.each do |mode|
-          results << B.enchmark("ENCRYPT #{mode[0]} bits, ascii_armor=#{mode[1]?1:0}", :rounds => rounds, :compare => :mean) do
+          results << B.enchmark("ENCRYPT #{mode[0]} bits, ascii_armor=#{mode[1] ? 1 : 0}", rounds: rounds, compare: :mean) do
             alice = Akero.new(mode[0])
             bob   = Akero.new(mode[0])
-            msg_sizes.each_with_index do |msize, i|
+            msg_sizes.each_with_index do |msize, _i|
               msg = rnd.bytes(msize)
               job "msg_size #{msize}" do
                 alice.encrypt(bob.public_key, msg, mode[1])
@@ -55,10 +56,10 @@ class Akero
         end
 
         modes.each do |mode|
-          results << B.enchmark("DECRYPT #{mode[0]} bits, ascii_armor=#{mode[1]?1:0}", :rounds => rounds, :compare => :mean) do
+          results << B.enchmark("DECRYPT #{mode[0]} bits, ascii_armor=#{mode[1] ? 1 : 0}", rounds: rounds, compare: :mean) do
             alice = Akero.new(mode[0])
             bob   = Akero.new(mode[0])
-            msg_sizes.each_with_index do |msize, i|
+            msg_sizes.each_with_index do |msize, _i|
               msg = rnd.bytes(msize)
               msg = alice.encrypt(bob.public_key, msg, mode[1])
               job "msg_size #{msize}" do
@@ -69,10 +70,10 @@ class Akero
         end
 
         modes.each do |mode|
-          results << B.enchmark("SIGN #{mode[0]} bits, ascii_armor=#{mode[1]?1:0}", :rounds => rounds, :compare => :mean) do
+          results << B.enchmark("SIGN #{mode[0]} bits, ascii_armor=#{mode[1] ? 1 : 0}", rounds: rounds, compare: :mean) do
             alice = Akero.new(mode[0])
             bob   = Akero.new(mode[0])
-            msg_sizes.each_with_index do |msize, i|
+            msg_sizes.each_with_index do |msize, _i|
               msg = rnd.bytes(msize)
               job "msg_size #{msize}" do
                 alice.sign(msg, mode[1])
@@ -83,19 +84,19 @@ class Akero
 
         ds = {}
         title = []
-        results.each_with_index do |r, i|
-          r.each_with_index do |v,j|
-            (ds[v[:group]] ||= []) << [msg_sizes[j],v[:rate]]
+        results.each_with_index do |r, _i|
+          r.each_with_index do |v, j|
+            (ds[v[:group]] ||= []) << [msg_sizes[j], v[:rate]]
           end
         end
 
-        plot('benchmark/bm_rate.png', ds, "Throughput", 'Input size (bytes)', 'Messages/sec')
+        plot('benchmark/bm_rate.png', ds, 'Throughput', 'Input size (bytes)', 'Messages/sec')
       end
 
       def plot(path, ds, label, xlabel, ylabel)
         Gnuplot.open do |gp|
-          Gnuplot::Plot.new( gp ) do |plot|
-            plot.terminal "png"
+          Gnuplot::Plot.new(gp) do |plot|
+            plot.terminal 'png'
             plot.output path
             plot.title  label
             plot.xlabel xlabel
@@ -108,13 +109,13 @@ class Akero
             plot.set 'tics nomirror'
             plot.style 'line 12 lc rgb "#808080" lt 0 lw 1'
             plot.set 'grid back ls 12'
-            i=0
+            i = 0
             ds.each do |k, v|
-              plot.data << Gnuplot::DataSet.new([v.collect {|x| x[0]}, v.collect {|x| x[1]}]) do |_ds|
-                _ds.with = "lp ls #{i+1}"
+              plot.data << Gnuplot::DataSet.new([v.collect { |x| x[0] }, v.collect { |x| x[1] }]) do |_ds|
+                _ds.with = "lp ls #{i + 1}"
                 _ds.title = k
               end
-              i+=1
+              i += 1
             end
           end
         end

@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 my_code = <<'RUBY_CODE'
   if type == 'failed'
     system "ssh 192.168.1.106 '~/bin/keyboard_leds -c1 >/dev/null'"
@@ -9,10 +10,10 @@ my_code = <<'RUBY_CODE'
   end
 RUBY_CODE
 
-notification :eval_notifier, :code => my_code
+notification :eval_notifier, code: my_code
 
-guard 'rspec', :cli => '--color --format doc' do
+guard 'rspec', cli: '--color --format doc' do
   watch(%r{^spec/.+_spec\.rb$})
   watch(%r{^lib/(.+)\.rb$})     { |m| "spec/lib/#{m[1]}_spec.rb" }
-  watch('spec/spec_helper.rb')  { "spec" }
+  watch('spec/spec_helper.rb')  { 'spec' }
 end

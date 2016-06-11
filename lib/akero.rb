@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # Copyright (c) 2012 moe@busyloop.net
 #
 # MIT License
@@ -21,7 +22,7 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-require "akero/version"
+require 'akero/version'
 
 require 'openssl'
 require 'base64'
@@ -41,7 +42,9 @@ class Akero
 
     # @private
     def initialize(body, signer_cert, type)
-      @body, @signer_cert, @type = body, signer_cert, type
+      @body = body
+      @signer_cert = signer_cert
+      @type = type
     end
 
     # @private
@@ -63,23 +66,24 @@ class Akero
   end
 end
 
+# Akero
 class Akero
-  ERR_MSG_MALFORMED_ENV = "Malformed message: Could not parse envelope" # @private
-  ERR_MSG_MALFORMED_BODY = "Malformed message: Could not parse body; POSSIBLE SPOOF ATTEMPT" # @private
-  ERR_PKEY_CORRUPT = "Invalid private key (checksum mismatch)" # @private
-  ERR_CERT_CORRUPT = "Invalid certificate" # @private
-  ERR_INVALID_RECIPIENT = "Invalid recipient (must be a String)" # @private
-  ERR_INVALID_RECIPIENT_CERT = "Invalid recipient (corrupt public key?)" # @private
-  ERR_DECRYPT = "Could not decrypt message" # @private
-  ERR_MSG_NOT_STRING_NOR_PKCS7 = "Message must be of type String or OpenSSL::PKCS7" # @private
-  ERR_MSG_CORRUPT_CERT = "Malformed message: Embedded certificate could not be verified; POSSIBLE SPOOF ATTEMPT!" # @private
-  ERR_MSG_TOO_MANY_SIGNERS = "Corrupt message: Zero or multiple signers, expected exactly 1; POSSIBLE SPOOF ATTEMPT" # @private
+  ERR_MSG_MALFORMED_ENV = 'Malformed message: Could not parse envelope' # @private
+  ERR_MSG_MALFORMED_BODY = 'Malformed message: Could not parse body; POSSIBLE SPOOF ATTEMPT' # @private
+  ERR_PKEY_CORRUPT = 'Invalid private key (checksum mismatch)' # @private
+  ERR_CERT_CORRUPT = 'Invalid certificate' # @private
+  ERR_INVALID_RECIPIENT = 'Invalid recipient (must be a String)' # @private
+  ERR_INVALID_RECIPIENT_CERT = 'Invalid recipient (corrupt public key?)' # @private
+  ERR_DECRYPT = 'Could not decrypt message' # @private
+  ERR_MSG_NOT_STRING_NOR_PKCS7 = 'Message must be of type String or OpenSSL::PKCS7' # @private
+  ERR_MSG_CORRUPT_CERT = 'Malformed message: Embedded certificate could not be verified; POSSIBLE SPOOF ATTEMPT!' # @private
+  ERR_MSG_TOO_MANY_SIGNERS = 'Corrupt message: Zero or multiple signers, expected exactly 1; POSSIBLE SPOOF ATTEMPT' # @private
 
   PKEY_HEADER = "-----BEGIN AKERO PRIVATE KEY-----\n" # @private
   PKEY_FOOTER = "-----END AKERO PRIVATE KEY-----\n" # @private
-  PLATE_CERT = ['CERTIFICATE','AKERO PUBLIC KEY'] # @private
-  PLATE_SIGNED = ['PKCS7', 'AKERO SIGNED MESSAGE'] # @private
-  PLATE_CRYPTED = ['PKCS7', 'AKERO SECRET MESSAGE'] # @private
+  PLATE_CERT = ['CERTIFICATE', 'AKERO PUBLIC KEY'].freeze # @private
+  PLATE_SIGNED = ['PKCS7', 'AKERO SIGNED MESSAGE'].freeze # @private
+  PLATE_CRYPTED = ['PKCS7', 'AKERO SECRET MESSAGE'].freeze # @private
 
   DEFAULT_RSA_BITS = 4096
   DEFAULT_DIGEST = OpenSSL::Digest::SHA512
@@ -105,7 +109,7 @@ class Akero
   # @param [Integer] rsa_bits RSA key length
   # @param [OpenSSL::Digest] digest Signature digest
   # @return [Akero] New Akero instance
-  def initialize(rsa_bits=DEFAULT_RSA_BITS, digest=DEFAULT_DIGEST)
+  def initialize(rsa_bits = DEFAULT_RSA_BITS, digest = DEFAULT_DIGEST)
     @key, @cert = generate_keypair(rsa_bits, digest) unless rsa_bits.nil?
   end
 
@@ -117,14 +121,14 @@ class Akero
   # @param [String] private_key Akero private key
   # @return [Akero] New Akero instance
   def self.load(private_key)
-    inner = Base64.decode64(private_key[PKEY_HEADER.length..private_key.length-PKEY_FOOTER.length])
+    inner = Base64.decode64(private_key[PKEY_HEADER.length..private_key.length - PKEY_FOOTER.length])
     if inner[0..63] != OpenSSL::Digest::SHA512.new(inner[64..-1]).digest
-      raise RuntimeError, ERR_PKEY_CORRUPT
+      raise ERR_PKEY_CORRUPT
     end
     cert_len = inner[64..65].unpack('S')[0]
     akero = Akero.new(nil)
-    akero.instance_variable_set(:@cert, OpenSSL::X509::Certificate.new(inner[66..66+cert_len]))
-    akero.instance_variable_set(:@key, OpenSSL::PKey::RSA.new(inner[66+cert_len..-1]))
+    akero.instance_variable_set(:@cert, OpenSSL::X509::Certificate.new(inner[66..66 + cert_len]))
+    akero.instance_variable_set(:@key, OpenSSL::PKey::RSA.new(inner[66 + cert_len..-1]))
     akero
   end
 
@@ -135,7 +139,7 @@ class Akero
   #
   # @return [String] Public key (ascii armored)
   def public_key
-    Akero::replate(@cert.to_s, Akero::PLATE_CERT)
+    Akero.replate(@cert.to_s, Akero::PLATE_CERT)
   end
 
   # Private key (do not share this with anyone!)
@@ -157,7 +161,7 @@ class Akero
     out << cert_der
     out << @key.to_der
     out.insert(0, OpenSSL::Digest::SHA512.new(out).digest)
-    PKEY_HEADER+Base64.encode64(out)+PKEY_FOOTER
+    PKEY_HEADER + Base64.encode64(out) + PKEY_FOOTER
   end
 
   # Sign a message.
@@ -165,7 +169,7 @@ class Akero
   # @param [String] plaintext The message to sign (binary safe)
   # @param [Boolean] ascii_armor Convert the output in base64?
   # @return [String] Akero signed message
-  def sign(plaintext, ascii_armor=true)
+  def sign(plaintext, ascii_armor = true)
     out = _sign(plaintext)
     ascii_armor ? Akero.replate(out.to_s, Akero::PLATE_SIGNED) : out.to_der
   end
@@ -190,20 +194,20 @@ class Akero
   # @param [String] plaintext The message to encrypt (binary safe)
   # @param [Boolean] ascii_armor Convert the output to base64?
   # @return [String] Akero secret message
-  def encrypt(to, plaintext, ascii_armor=true)
+  def encrypt(to, plaintext, ascii_armor = true)
     to = [to] unless to.is_a? Array
-    to = to.map { |e|
+    to = to.map do |e|
       case e
-        when String
-          begin
-            OpenSSL::X509::Certificate.new(Akero.replate(e, Akero::PLATE_CERT, true))
-          rescue OpenSSL::X509::CertificateError
-            raise RuntimeError, ERR_INVALID_RECIPIENT_CERT
-          end
-        else
-          raise RuntimeError, ERR_INVALID_RECIPIENT
+      when String
+        begin
+          OpenSSL::X509::Certificate.new(Akero.replate(e, Akero::PLATE_CERT, true))
+        rescue OpenSSL::X509::CertificateError
+          raise ERR_INVALID_RECIPIENT_CERT
+        end
+      else
+        raise ERR_INVALID_RECIPIENT
       end
-    }
+    end
     out = _sign(_encrypt(to, _sign(plaintext, false)))
     ascii_armor ? Akero.replate(out.to_s, PLATE_CRYPTED) : out.to_der
   end
@@ -219,21 +223,21 @@ class Akero
     begin
       body, signer_cert, body_type = verify(ciphertext, nil)
     rescue ArgumentError
-      raise RuntimeError, ERR_MSG_MALFORMED_ENV
+      raise ERR_MSG_MALFORMED_ENV
     end
 
     case body_type.ord
-      when 0x00
-        # public message (signed)
-        return Message.new(body, signer_cert, :signed)
-      when 0x01
-        # private message (signed, crypted, signed)
-        signed_plaintext = _decrypt(body)
-        plaintext, verified_cert, body_type = verify(signed_plaintext, signer_cert)
-        msg = Message.new(plaintext, signer_cert, :encrypted)
-        return msg
+    when 0x00
+      # public message (signed)
+      return Message.new(body, signer_cert, :signed)
+    when 0x01
+      # private message (signed, crypted, signed)
+      signed_plaintext = _decrypt(body)
+      plaintext, _verified_cert, _body_type = verify(signed_plaintext, signer_cert)
+      msg = Message.new(plaintext, signer_cert, :encrypted)
+      return msg
     end
-    raise RuntimeError, ERR_MSG_MALFORMED_BODY
+    raise ERR_MSG_MALFORMED_BODY
   end
 
   # @private
@@ -247,7 +251,7 @@ class Akero
   end
 
   #---------------------------------------------------------------------------
-  protected
+  class << self; protected; end
 
   # Swap the "license plates" on an ascii-armored message.
   # This is done for user-friendliness, so stored Akero
@@ -257,9 +261,9 @@ class Akero
   # @param [Array] plates Array of the two plates to swap
   # @param [Boolean] reverse Reverse the swap?
   # @return [String] The replated message
-  def self.replate(msg, plates, reverse=false)
-    a,b = reverse ? [1,0] : [0,1]
-    "-----BEGIN #{plates[b]}-----#{msg.strip[plates[a].length+16..-(plates[a].length+15)]}-----END #{plates[b]}-----\n"
+  def self.replate(msg, plates, reverse = false)
+    a, b = reverse ? [1, 0] : [0, 1]
+    "-----BEGIN #{plates[b]}-----#{msg.strip[plates[a].length + 16..-(plates[a].length + 15)]}-----END #{plates[b]}-----\n"
   end
 
   # Extract fingerprint from an Akero public key.
@@ -269,37 +273,35 @@ class Akero
     cert.extensions.map.each do |e|
       return "AK:#{e.value}" if e.oid == 'subjectKeyIdentifier'
     end
-    raise RuntimeError, ERR_CERT_CORRUPT
+    raise ERR_CERT_CORRUPT
   end
 
   #---------------------------------------------------------------------------
   private
 
   def _decrypt(crypted_msg)
-    begin
-      OpenSSL::PKCS7.new(crypted_msg).decrypt(@key, @cert)
-    rescue OpenSSL::PKCS7::PKCS7Error, "decrypt error"
-      raise RuntimeError, ERR_DECRYPT
-    end
+    OpenSSL::PKCS7.new(crypted_msg).decrypt(@key, @cert)
+  rescue OpenSSL::PKCS7::PKCS7Error, 'decrypt error'
+    raise ERR_DECRYPT
   end
 
-  def _encrypt(to, msg, cipher=nil)
-    cipher ||= OpenSSL::Cipher::new("AES-256-CFB")
-    OpenSSL::PKCS7::encrypt(to, msg.to_der, cipher, OpenSSL::PKCS7::BINARY)
+  def _encrypt(to, msg, cipher = nil)
+    cipher ||= OpenSSL::Cipher.new('AES-256-CFB')
+    OpenSSL::PKCS7.encrypt(to, msg.to_der, cipher, OpenSSL::PKCS7::BINARY)
   end
 
-  def _sign(message, embed_cert=true)
+  def _sign(message, embed_cert = true)
     flags = embed_cert ? OpenSSL::PKCS7::BINARY : (OpenSSL::PKCS7::BINARY | OpenSSL::PKCS7::NOCERTS)
     case message
-      when String
-        type = 0x00
-      when OpenSSL::PKCS7
-        type = 0x01
-      else
-        raise RuntimeError, ERR_MSG_NOT_STRING_NOR_PKCS7
+    when String
+      type = 0x00
+    when OpenSSL::PKCS7
+      type = 0x01
+    else
+      raise ERR_MSG_NOT_STRING_NOR_PKCS7
     end
     message = message.to_der if message.is_a? OpenSSL::PKCS7
-    OpenSSL::PKCS7::sign(@cert, @key, type.chr + message, [], flags)
+    OpenSSL::PKCS7.sign(@cert, @key, type.chr + message, [], flags)
   end
 
   def verify(signed_msg, cert)
@@ -307,15 +309,15 @@ class Akero
     store = OpenSSL::X509::Store.new
 
     if cert.nil?
-      if signed_msg.certificates.nil? or signed_msg.certificates.length != 1
-        raise RuntimeError, ERR_MSG_TOO_MANY_SIGNERS
+      if signed_msg.certificates.nil? || signed_msg.certificates.length != 1
+        raise ERR_MSG_TOO_MANY_SIGNERS
       end
 
       cert = signed_msg.certificates[0]
     end
 
     unless signed_msg.verify([cert], store, nil, OpenSSL::PKCS7::NOINTERN | OpenSSL::PKCS7::NOVERIFY)
-      raise RuntimeError, ERR_MSG_CORRUPT_CERT
+      raise ERR_MSG_CORRUPT_CERT
     end
 
     [signed_msg.data[1..-1], cert, signed_msg.data[0]]
@@ -326,7 +328,7 @@ class Akero
   # @param [Integer] rsa_bits RSA key length
   # @param [OpenSSL::Digest] digest Signature digest
   # @return [Array] rsa_keypair, certificate
-  def generate_keypair(rsa_bits=DEFAULT_RSA_BITS, digest=DEFAULT_DIGEST)
+  def generate_keypair(rsa_bits = DEFAULT_RSA_BITS, digest = DEFAULT_DIGEST)
     cn = "Akero #{Akero::VERSION}"
     rsa = OpenSSL::PKey::RSA.new(rsa_bits)
 
@@ -338,20 +340,19 @@ class Akero
     cert.issuer = name
     cert.not_before = Time.now
     # valid until 2038-01-19 04:14:06 +0100
-    cert.not_after = Time.at(2147483646)
+    cert.not_after = Time.at(2_147_483_646)
     cert.public_key = rsa.public_key
 
     ef = OpenSSL::X509::ExtensionFactory.new(nil, cert)
     ef.issuer_certificate = cert
     cert.extensions = [
-      ef.create_extension("basicConstraints","CA:FALSE"),
-      ef.create_extension("subjectKeyIdentifier", "hash"),
+      ef.create_extension('basicConstraints', 'CA:FALSE'),
+      ef.create_extension('subjectKeyIdentifier', 'hash')
     ]
-    aki = ef.create_extension("authorityKeyIdentifier",
-                              "keyid:always,issuer:always")
+    aki = ef.create_extension('authorityKeyIdentifier',
+                              'keyid:always,issuer:always')
     cert.add_extension(aki)
     cert.sign(rsa, digest.new)
     [rsa, cert]
   end
 end
-

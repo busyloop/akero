@@ -1,0 +1,43 @@
+AllCops:
+  TargetRubyVersion: 2.3
+
+# Offense count: 13
+Lint/AmbiguousRegexpLiteral:
+  Exclude:
+    - 'spec/akero_spec.rb'
+
+# Offense count: 1
+Lint/UnderscorePrefixedVariableName:
+  Exclude:
+    - 'lib/akero/benchmark.rb'
+
+# Offense count: 8
+Lint/UselessAssignment:
+  Exclude:
+    - 'lib/akero/benchmark.rb'
+    - 'spec/akero_spec.rb'
+
+# Offense count: 9
+Lint/Void:
+  Exclude:
+    - 'spec/akero_spec.rb'
+
+# Offense count: 7
+Metrics/AbcSize:
+  Max: 60
+
+# Offense count: 2
+# Configuration parameters: CountComments.
+Metrics/ClassLength:
+  Max: 164
+
+# Offense count: 45
+# Configuration parameters: AllowHeredoc, AllowURI, URISchemes.
+# URISchemes: http, https
+Metrics/LineLength:
+  Max: 150
+
+# Offense count: 8
+# Configuration parameters: CountComments.
+Metrics/MethodLength:
+  Max: 51

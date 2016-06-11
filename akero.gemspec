@@ -1,21 +1,24 @@
 # -*- encoding: utf-8 -*-
+# frozen_string_literal: true
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'akero/version'
 
 Gem::Specification.new do |gem|
-  gem.name          = "akero"
+  gem.name          = 'akero'
   gem.version       = Akero::VERSION
-  gem.authors       = ["Moe"]
-  gem.email         = ["moe@busyloop.net"]
-  gem.description   = %q{Easy peer-to-peer public key cryptography}
-  gem.summary       = %q{Easy peer-to-peer public key cryptography}
-  gem.homepage      = "https://github.com/busyloop/akero"
+  gem.authors       = ['Moe']
+  gem.email         = ['moe@busyloop.net']
+  gem.description   = 'Easy peer-to-peer public key cryptography'
+  gem.summary       = 'Easy peer-to-peer public key cryptography'
+  gem.homepage      = 'https://github.com/busyloop/akero'
 
-  gem.files         = `git ls-files`.split($/)
-  gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
+  gem.files         = `git ls-files`.split($INPUT_RECORD_SEPARATOR)
+  gem.executables   = gem.files.grep(%r{^bin/}).map { |f| File.basename(f) }
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
-  gem.require_paths = ["lib"]
+  gem.require_paths = ['lib']
+
+  gem.required_ruby_version = '>= 2.3.1'
 
   gem.add_dependency 'optix'
 
