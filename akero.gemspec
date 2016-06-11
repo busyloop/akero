@@ -32,4 +32,5 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency 'gnuplot'
   gem.add_development_dependency 'yard'
   gem.add_development_dependency 'bump'
+  gem.add_development_dependency 'rubocop'
 end
