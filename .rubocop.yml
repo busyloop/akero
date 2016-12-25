@@ -41,3 +41,7 @@ Metrics/LineLength:
 # Configuration parameters: CountComments.
 Metrics/MethodLength:
   Max: 51
+
+Lint/UselessAccessModifier:
+  Exclude:
+    - 'lib/akero.rb'
